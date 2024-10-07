@@ -1,0 +1,10 @@
+
+Comandi base di GitHub
+
+-- Set Up Git Enviroment --
+git init
+git add -A
+git commit -m 'Added my project'
+git remote add origin https://github.com/FilippoDude/wehostgames
+git push -u -f origin main
+

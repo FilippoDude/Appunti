@@ -1,0 +1,52 @@
+name: appunti
+services:
+  miniapp-server:
+    image: node
+    ports:
+      - 3001:3000
+    volumes:
+      - ./Server:/app
+      - ./shared:/app/shared
+
+    working_dir: /app
+    command: ./entrypoint.sh
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+
+  miniapp:
+    image: node
+    ports:
+      - 3000:8080
+    volumes:
+      - ./App:/app
+      - ./shared:/app/src/shared
+    working_dir: /app
+    command: ./entrypoint.sh
+    environment:
+      - VITE_DEBUG_MODE=${VITE_DEBUG_MODE}
+      - VITE_API_URL=${VITE_API_URL}
+      - VITE_WEBSITE_URL=${VITE_WEBSITE_URL}
+
+  appBuild:
+    image: node
+    working_dir: /app
+    ports:
+      - 3002:3000
+    volumes:
+      - ./AppBuild:/app
+      - ./App/docs/assets:/static
+    command: ./entrypoint.sh
+
+  db:
+    image: mysql
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+volumes:
+  db:
+
